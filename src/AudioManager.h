@@ -31,14 +31,14 @@ static pa_context * ctx; //get context with application name and pr
 extern bool audioRunning;
 extern bool threadComplete;
 
-class AudioHandler {
+class AudioManager {
 private:
     /* data */
     float m_magnitudeData[BINS];
 
 public:
-    AudioHandler();
-    ~AudioHandler();
+    AudioManager();
+    ~AudioManager();
 
     FFTProcessor * processor;
 
@@ -58,4 +58,4 @@ static void do_op(pa_operation * op);
 //callback for when new data is available in the stream
 static void on_io_complete(pa_stream *s, size_t nbytes, void *udata);
 
-void setupAudio(AudioHandler * audioHandler);
+void setupAudio(AudioManager * audioManager);

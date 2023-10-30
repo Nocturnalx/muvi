@@ -4,7 +4,7 @@
 #include <epoxy/gl.h>
 #include <thread>
 
-#include "AudioHandler.h"
+#include "AudioManager.h"
 
 #define BINS 513
 
@@ -58,7 +58,7 @@ static const char *fragment_shader_source_21 = R"(
     }
 )";
 
-static AudioHandler * audioHandler;
+static AudioManager * audioManager;
 
 static GLuint program;
 static GLuint vao, rectangleVBO, xOffsetVBO, magnitudeVBO;

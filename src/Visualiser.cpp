@@ -3,7 +3,7 @@
 static gboolean loadNewFFTValues(gpointer user_data){
 
   //only call when buffer is completely full to prevent capturing a half baked frame
-  if (audioHandler->processor->frameReady){
+  if (audioManager->processor->frameReady){
 
     GtkGLArea * glArea = GTK_GL_AREA(user_data);
 
@@ -14,11 +14,11 @@ static gboolean loadNewFFTValues(gpointer user_data){
     }
 
     // setVBOs(data);
-    setVBOs(audioHandler->getMagnitudeData());
+    setVBOs(audioManager->getMagnitudeData());
 
     gtk_gl_area_queue_render(glArea);
 
-    audioHandler->processor->frameReady = false;
+    audioManager->processor->frameReady = false;
   }
 
   return true;
@@ -192,7 +192,7 @@ static void glAreaDestroy(GtkWidget * widget, gpointer user_data){
     //wait for the audio thread to complete all of its memory tasks
   }
 
-  delete audioHandler;
+  delete audioManager;
 }
 
 void activate (GtkApplication *app, gpointer user_data) {
@@ -216,9 +216,9 @@ void activate (GtkApplication *app, gpointer user_data) {
 
   std::cout << "starting audio thread\n";
 
-  audioHandler = new AudioHandler();
+  audioManager = new AudioManager();
 
   //start pulse audio
-  std::thread audioThread(setupAudio, audioHandler);
+  std::thread audioThread(setupAudio, audioManager);
   audioThread.detach();
 }

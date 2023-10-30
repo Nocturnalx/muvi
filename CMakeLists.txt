@@ -7,7 +7,7 @@ enable_testing()
 set( project_sources
    src/main.cpp
    src/Visualiser.cpp
-   src/AudioHandler.cpp
+   src/AudioManager.cpp
    src/AudioProcessor.cpp
    src/FFTProcessor.cpp
    kissfft/kiss_fft.c

@@ -1,4 +1,4 @@
-#include "AudioHandler.h"
+#include "AudioManager.h"
 
 bool audioRunning = true;
 bool threadComplete = false;
@@ -73,7 +73,7 @@ static void on_io_complete(pa_stream *s, size_t nbytes, void *udata){
 }
 
 
-AudioHandler::AudioHandler()
+AudioManager::AudioManager()
 {
     processor = new FFTProcessor();
     processor->init(SAMPLE_RATE, sizeof(short int), CHANNEL_NUM, BUFFER_LENGTH_MSEC);
@@ -85,12 +85,12 @@ AudioHandler::AudioHandler()
     processor->bindMagnitudeBuffer(m_magnitudeData);
 }
 
-AudioHandler::~AudioHandler()
+AudioManager::~AudioManager()
 {
     delete processor;
 }
 
-float * AudioHandler::getMagnitudeData(){
+float * AudioManager::getMagnitudeData(){
 
     return m_magnitudeData;
 }
@@ -106,7 +106,7 @@ void getDeviceIDs(){
 }
 
 //start the audio recording/processing in a new thread
-void start(pa_context *ctx, AudioHandler *audioHandler){
+void start(pa_context *ctx, AudioManager *audioManager){
 
     //create and set up stream
     pa_sample_spec spec;
@@ -152,7 +152,7 @@ void start(pa_context *ctx, AudioHandler *audioHandler){
         } else if (data == NULL && n != 0) {
             std::cout << "buffer overrun\n";
         } else {
-            audioHandler->processor->process((short int *)data, n);
+            audioManager->processor->process((short int *)data, n);
         }
 
         pa_stream_drop(stm);
@@ -166,7 +166,7 @@ void start(pa_context *ctx, AudioHandler *audioHandler){
     pa_stream_unref(stm);
 }
 
-void setupAudio(AudioHandler * audioHandler){
+void setupAudio(AudioManager * audioManager){
 
     mloop = pa_threaded_mainloop_new();
 
@@ -192,7 +192,7 @@ void setupAudio(AudioHandler * audioHandler){
     //set the device ID strings using the device number
     getDeviceIDs();
     //start the audio recording/processing in a new thread
-    start(ctx, audioHandler);
+    start(ctx, audioManager);
 
     //closing
     pa_context_disconnect(ctx);
