@@ -1,5 +1,5 @@
 # muvi
-This is an audio visualizer project primarily targeting the raspberry pi but also for desktop linux as well.
+This is an audio visualiser project primarily targeting the raspberry pi but also for desktop linux as well.
 
 It uses gtk 3 for the window, expoy for openGL rendering and the pulse audio api to capture audio so to build you need:
 
