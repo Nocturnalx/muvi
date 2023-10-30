@@ -4,6 +4,8 @@
 
 int main (int argc, char **argv) {
 
+    std::terminate_handler(quitProgram);
+
     int status;
     
     GtkApplication * app = gtk_application_new ("com.utladal.visualiser", G_APPLICATION_FLAGS_NONE);

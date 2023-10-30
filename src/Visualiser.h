@@ -2,11 +2,15 @@
 
 #include <gtk/gtk.h>
 #include <epoxy/gl.h>
+#include <memory>
 #include <thread>
 
 #include "AudioManager.h"
 
 #define BINS 513
+
+//deals with shutting down threads
+void quitProgram();
 
 static const char *vertex_shader_source_30 = R"(
     #version 330
@@ -58,7 +62,7 @@ static const char *fragment_shader_source_21 = R"(
     }
 )";
 
-static AudioManager * audioManager;
+static std::shared_ptr<AudioManager> audioManager;
 
 static GLuint program;
 static GLuint vao, rectangleVBO, xOffsetVBO, magnitudeVBO;

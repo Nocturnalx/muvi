@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include <iostream>
+#include <memory>
 
 #include "FFTProcessor.h"
 
@@ -40,7 +41,7 @@ public:
     AudioManager();
     ~AudioManager();
 
-    FFTProcessor * processor;
+    std::unique_ptr<FFTProcessor> processor;
 
     float * getMagnitudeData();
 };
@@ -58,4 +59,9 @@ static void do_op(pa_operation * op);
 //callback for when new data is available in the stream
 static void on_io_complete(pa_stream *s, size_t nbytes, void *udata);
 
-void setupAudio(AudioManager * audioManager);
+//gets list of device IDs as well as setting desired in/out IDs for PA
+static void getDeviceIDs();
+//start the audio recording/processing
+static void start(pa_context *ctx, std::shared_ptr<AudioManager> audioManager);
+
+void setupAudio(std::shared_ptr<AudioManager> audioManager);

@@ -1,5 +1,20 @@
 #include "Visualiser.h"
 
+void quitProgram(){
+  //(destroy timeout to stop timeout from trying to call on null data)
+  if (glAreaTimeoutID > 0){
+    g_source_remove(glAreaTimeoutID);
+    glAreaTimeoutID = 0;
+  }
+
+  audioRunning = false;
+
+  while(!threadComplete){
+
+    //wait for the audio thread to complete all of its memory tasks
+  }
+}
+
 static gboolean loadNewFFTValues(gpointer user_data){
 
   //only call when buffer is completely full to prevent capturing a half baked frame
@@ -179,20 +194,7 @@ static void realize(GtkGLArea *area) {
 //tidy up threads when glArea gets destroyed
 static void glAreaDestroy(GtkWidget * widget, gpointer user_data){
 
-  //(destroy timeout to stop timeout from trying to call on null data)
-  if (glAreaTimeoutID > 0){
-    g_source_remove(glAreaTimeoutID);
-    glAreaTimeoutID = 0;
-  }
-
-  audioRunning = false;
-
-  while(!threadComplete){
-
-    //wait for the audio thread to complete all of its memory tasks
-  }
-
-  delete audioManager;
+  quitProgram();
 }
 
 void activate (GtkApplication *app, gpointer user_data) {
@@ -214,9 +216,7 @@ void activate (GtkApplication *app, gpointer user_data) {
 
   gtk_widget_show_all (window);
 
-  std::cout << "starting audio thread\n";
-
-  audioManager = new AudioManager();
+  audioManager = std::make_shared<AudioManager>();
 
   //start pulse audio
   std::thread audioThread(setupAudio, audioManager);

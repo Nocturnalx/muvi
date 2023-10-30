@@ -23,7 +23,7 @@ private:
     kiss_fft_scalar * m_inputBuffer;
     kiss_fft_cpx * m_cpxBuffer;
 
-    float * m_magnitudeBuffer; //pointer to external magnitude buffer array to fill
+    float * m_magnitudeBuffer; //pointer to external magnitude buffer array (so points to stack array no need to delete [])
 
     u_int m_inputBufferIndex = 0;
 

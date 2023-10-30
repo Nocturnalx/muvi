@@ -75,7 +75,7 @@ static void on_io_complete(pa_stream *s, size_t nbytes, void *udata){
 
 AudioManager::AudioManager()
 {
-    processor = new FFTProcessor();
+    processor = std::make_unique<FFTProcessor>();
     processor->init(SAMPLE_RATE, sizeof(short int), CHANNEL_NUM, BUFFER_LENGTH_MSEC);
 
     for (int i = 0; i < BINS; i++){
@@ -87,7 +87,6 @@ AudioManager::AudioManager()
 
 AudioManager::~AudioManager()
 {
-    delete processor;
 }
 
 float * AudioManager::getMagnitudeData(){
@@ -95,7 +94,7 @@ float * AudioManager::getMagnitudeData(){
     return m_magnitudeData;
 }
 
-void getDeviceIDs(){
+static void getDeviceIDs(){
     //output 
     do_op(pa_context_get_sink_info_list(ctx, on_dev_sink, NULL));
     //input 
@@ -106,7 +105,7 @@ void getDeviceIDs(){
 }
 
 //start the audio recording/processing in a new thread
-void start(pa_context *ctx, AudioManager *audioManager){
+static void start(pa_context *ctx, std::shared_ptr<AudioManager> audioManager){
 
     //create and set up stream
     pa_sample_spec spec;
@@ -136,9 +135,6 @@ void start(pa_context *ctx, AudioManager *audioManager){
     //audio processing loop
     std::cout << "starting audio\n";
 
-    int cnt = 0;
-    int failSafe = 10000;
-
     while (audioRunning){
         const void * data;
         size_t n;
@@ -156,17 +152,13 @@ void start(pa_context *ctx, AudioManager *audioManager){
         }
 
         pa_stream_drop(stm);
-
-        // if (cnt++ > failSafe){
-        //     audioRunning = false;
-        // }
     }
 
     pa_stream_disconnect(stm);
     pa_stream_unref(stm);
 }
 
-void setupAudio(AudioManager * audioManager){
+void setupAudio(std::shared_ptr<AudioManager> audioManager){
 
     mloop = pa_threaded_mainloop_new();
 
