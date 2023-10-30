@@ -10,6 +10,7 @@
 #define BINS 513
 
 //deals with shutting down threads
+static bool quitProgramRun = false;
 void quitProgram();
 
 static const char *vertex_shader_source_30 = R"(

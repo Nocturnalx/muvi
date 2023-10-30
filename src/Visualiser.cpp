@@ -1,17 +1,23 @@
 #include "Visualiser.h"
 
 void quitProgram(){
-  //(destroy timeout to stop timeout from trying to call on null data)
-  if (glAreaTimeoutID > 0){
-    g_source_remove(glAreaTimeoutID);
-    glAreaTimeoutID = 0;
-  }
+  
+  if (!quitProgramRun){
+    
+    //(destroy timeout to stop timeout from trying to call on null data)
+    if (glAreaTimeoutID > 0){
+      g_source_remove(glAreaTimeoutID);
+      glAreaTimeoutID = 0;
+    }
 
-  audioRunning = false;
+    audioRunning = false;
 
-  while(!threadComplete){
+    while(!threadComplete){
 
-    //wait for the audio thread to complete all of its memory tasks
+      //wait for the audio thread to complete all of its memory tasks
+    }
+
+    quitProgramRun = true;
   }
 }
 
