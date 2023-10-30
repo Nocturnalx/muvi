@@ -9,5 +9,5 @@ the binary in /bin is only for raspberry pi.
 
 Planned features:
 
-*I/O controll (setting audio source in command line or in app)
-*spotify API integration to display album art etc
+- I/O controll (setting audio source in command line or in app)
+- spotify API integration to display album art etc
