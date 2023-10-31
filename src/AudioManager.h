@@ -18,7 +18,7 @@
 #define BUFFER_LENGTH_MSEC 500
 #endif
 
-static int inputDevice = 1;
+static int inputDevice = 0;
 static int outputDevice = 0;
 
 static int inputDeviceIndex = 0;
