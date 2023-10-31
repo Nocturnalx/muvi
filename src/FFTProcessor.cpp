@@ -46,7 +46,7 @@ void FFTProcessor::process(short int * bufferPtr, size_t num){
                 val = logf(1 + val);
                 val /= m_normalisationValue;
 
-                if (val > 1.0f) val = 1.75f;
+                if (val > 1.0f) val = 1.0f;
                 if (val < 0.0f) val = 0.0f;
 
                 m_magnitudeBuffer[i] = val;
