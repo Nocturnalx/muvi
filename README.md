@@ -13,3 +13,5 @@ Planned features:
 
 - I/O controll (setting audio source in command line or in app)
 - spotify API integration to display album art etc
+
+My main idea for this is that it is to be used alongside a tool like spotifyd and captures the audio out from the pulse audio mixer loopback but it is also possible to set the audio jack to an input and capture audio from that. In the very long term I am thinking about possibly allowing a user to set the visualiser up as a full spotify client so that it can both play spotify audio and to the visualisations on top so you can just deamonize it to launch on startup and the pi will be its own contained spotify player/visualiser.
