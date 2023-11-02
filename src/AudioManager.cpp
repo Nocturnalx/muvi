@@ -1,5 +1,8 @@
 #include "AudioManager.h"
 
+int inputDevice = 0;
+int outputDevice = 0;
+
 bool audioRunning = true;
 bool threadComplete = false;
 
@@ -85,8 +88,7 @@ AudioManager::AudioManager()
     processor->bindDisplayBuffer(m_displayData);
 }
 
-AudioManager::~AudioManager()
-{
+AudioManager::~AudioManager(){
 }
 
 float * AudioManager::getDisplayData(){
@@ -96,12 +98,19 @@ float * AudioManager::getDisplayData(){
 
 static void getDeviceIDs(){
     //output 
-    do_op(pa_context_get_sink_info_list(ctx, on_dev_sink, NULL));
+    // do_op(pa_context_get_sink_info_list(ctx, on_dev_sink, NULL));
     //input 
     do_op(pa_context_get_source_info_list(ctx, on_dev_source, NULL));
 
     std::cout << "in: "<< inputDeviceID << '\n';
-    std::cout << "out: "<< outputDeviceID << '\n';
+    // std::cout << "out: "<< outputDeviceID << '\n';
+
+    if (inputDeviceID == ""){
+        std::cout << "No device found in position " << inputDevice << " check the devices list and try a lower value." << std::endl;
+        return;
+    }
+
+    deviceSet = true;
 }
 
 //start the audio recording/processing in a new thread
@@ -184,7 +193,9 @@ void setupAudio(std::shared_ptr<AudioManager> audioManager){
     //set the device ID strings using the device number
     getDeviceIDs();
     //start the audio recording/processing in a new thread
-    start(ctx, audioManager);
+    if (deviceSet){
+        start(ctx, audioManager);
+    }
 
     //closing
     pa_context_disconnect(ctx);

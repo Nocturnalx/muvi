@@ -18,13 +18,15 @@
 #define BUFFER_LENGTH_MSEC 500
 #endif
 
-static int inputDevice = 1;
-static int outputDevice = 0;
+extern int inputDevice;
+extern int outputDevice;
 
 static int inputDeviceIndex = 0;
 static int outputDeviceIndex = 0;
 static std::string inputDeviceID;
 static std::string outputDeviceID;
+
+static bool deviceSet = false;
 
 static pa_mainloop_api * mlapi; //get api
 static pa_context * ctx; //get context with application name and pr
