@@ -7,8 +7,6 @@
 
 #include "AudioManager.h"
 
-#define BINS 513
-
 //deals with shutting down threads
 static bool quitProgramRun = false;
 void quitProgram();
@@ -19,11 +17,11 @@ static const char *vertex_shader_source_30 = R"(
     layout(location = 1) in float xOffset;
     layout(location = 2) in float yScale;
 
-    out float scale;
+    out float colourScale;
 
     void main() {
-      scale = yScale;
-      float yPos = aPos.y * yScale - 1;
+      colourScale = yScale;
+      float yPos = aPos.y * 2 * yScale - 1;
       float xPos = aPos.x - xOffset;
       gl_Position = vec4(xPos, yPos, 0.0, 1.0);
     }
@@ -31,10 +29,10 @@ static const char *vertex_shader_source_30 = R"(
 
 static const char *fragment_shader_source_30 = R"(
     #version 330
-    in float scale;
+    in float colourScale;
     out vec4 frag_color;
     void main() {
-        frag_color = vec4(1.0 - scale, scale, 0.0, 1.0); // red color
+        frag_color = vec4(1.0 - colourScale, colourScale, 0.0, 1.0); // red color
     }
 )";
 
@@ -44,11 +42,11 @@ static const char *vertex_shader_source_21 = R"(
     attribute float xOffset;
     attribute float yScale;
 
-    varying float scale;
+    varying float colourScale;
 
     void main() {
-      scale = yScale;
-      float yPos = aPos.y * yScale - 1;
+      colourScale = yScale;
+      float yPos = aPos.y * 2 * yScale - 1;
       float xPos = aPos.x - xOffset;
       gl_Position = vec4(xPos, yPos, 0.0, 1.0);
     }
@@ -56,10 +54,10 @@ static const char *vertex_shader_source_21 = R"(
 
 static const char *fragment_shader_source_21 = R"(
     #version 120
-    varying float scale;
+    varying float colourScale;
 
     void main() {
-        gl_FragColor = vec4(1.0 - scale, 0.0, scale, 1.0); // red color
+        gl_FragColor = vec4(1.0 - colourScale, 0.0, colourScale, 1.0); // red color
     }
 )";
 
@@ -70,8 +68,8 @@ static GLuint vao, rectangleVBO, xOffsetVBO, magnitudeVBO;
 
 static GLfloat baseVertices[] = {
   0.0f,  1.0f,  // Top-left (1)
-  2.0f / (float)BINS,  1.0f,  // Top-right (2)
-  2.0f / (float)BINS, 0.0f,  // Bottom-right (3)
+  2.0f / (float)DISPLAY_BUF_LENGTH,  1.0f,  // Top-right (2)
+  2.0f / (float)DISPLAY_BUF_LENGTH, 0.0f,  // Bottom-right (3)
   0.0f, 0.0f   // Bottom-left (4)
 };
 

@@ -6,10 +6,14 @@
 #include "../kissfft/kiss_fftr.h"
 
 #ifndef NFFT
-    #define NFFT 1024
+    #define NFFT 2048
 #endif
 #ifndef BINS
-    #define BINS 513
+    #define BINS 1025
+#endif
+
+#ifndef DISPLAY_BUF_LENGTH
+#define DISPLAY_BUF_LENGTH 120
 #endif
 
 class FFTProcessor : public AudioProcessor
@@ -23,11 +27,12 @@ private:
     kiss_fft_scalar * m_inputBuffer;
     kiss_fft_cpx * m_cpxBuffer;
 
-    float * m_magnitudeBuffer; //pointer to external magnitude buffer array (so points to stack array no need to delete [])
+    float * m_displayBuffer; //pointer to external display buffer array (so points to stack array no need to delete [])
+    float m_magnitudeBuffer[BINS];
 
     u_int m_inputBufferIndex = 0;
 
-    float m_normalisationValue = logf(1+1024);
+    float m_normalisationValue = logf(16*NFFT);
     
 public:
     
@@ -38,5 +43,5 @@ public:
 
     void process(short int * bufferPtr, size_t num) override;
 
-    void bindMagnitudeBuffer(float * magnitudeBuffer);
+    void bindDisplayBuffer(float * displayBuffer);
 };

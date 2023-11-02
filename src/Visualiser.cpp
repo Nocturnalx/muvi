@@ -35,7 +35,7 @@ static gboolean loadNewFFTValues(gpointer user_data){
     }
 
     // setVBOs(data);
-    setVBOs(audioManager->getMagnitudeData());
+    setVBOs(audioManager->getDisplayData());
 
     gtk_gl_area_queue_render(glArea);
 
@@ -50,7 +50,7 @@ static void setVBOs(GLfloat * magnitudeData){
   //here we should only really want to update every second index of instance data not the rect or positioning data
 
   glBindBuffer(GL_ARRAY_BUFFER, magnitudeVBO);
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * BINS, magnitudeData);
+  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * DISPLAY_BUF_LENGTH, magnitudeData);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -67,7 +67,7 @@ static gboolean render_30 (GtkGLArea *area, GdkGLContext *context){
 
   glUseProgram(program);
   glBindVertexArray(vao);
-  glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, BINS);
+  glDrawArraysInstanced(GL_TRIANGLE_FAN, 0, 4, DISPLAY_BUF_LENGTH);
   glBindVertexArray(0);
 
   // we completed our drawing; the draw commands will be
@@ -87,7 +87,7 @@ static gboolean render_21 (GtkGLArea *area, GdkGLContext *context){
   glClear (GL_COLOR_BUFFER_BIT);
   glUseProgram(program);
   glBindVertexArray(vao);
-  for(int i = 0; i < BINS; i++){
+  for(int i = 0; i < DISPLAY_BUF_LENGTH; i++){
 
     glBindBuffer(GL_ARRAY_BUFFER, xOffsetVBO);
     glVertexAttribPointer(1,1,GL_FLOAT, GL_FALSE, sizeof(float), (void*)(i * sizeof(float)));
@@ -163,11 +163,11 @@ static void realize(GtkGLArea *area) {
   //VAOs and VBOs
   //here we should setup the rect buffer and the instance position data first then call the setVBO to do only the values
 
-  GLfloat xOffsetData[BINS];
-  GLfloat initMagnitudeData[BINS];
+  GLfloat xOffsetData[DISPLAY_BUF_LENGTH];
+  GLfloat initMagnitudeData[DISPLAY_BUF_LENGTH];
 
-  for (int i = 0; i < BINS; i++){
-    xOffsetData[i] = (float)1 - ((float)i * 2.0f / (float)BINS); ///0.02 is 2/100 (100 rects in a range of 2)
+  for (int i = 0; i < DISPLAY_BUF_LENGTH; i++){
+    xOffsetData[i] = (float)1 - ((float)i * 2.0f / (float)DISPLAY_BUF_LENGTH); ///0.02 is 2/100 (100 rects in a range of 2)
     initMagnitudeData[i] = 0.5;
   }
 
@@ -182,14 +182,14 @@ static void realize(GtkGLArea *area) {
 
   glGenBuffers(1, &xOffsetVBO);
   glBindBuffer(GL_ARRAY_BUFFER, xOffsetVBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float)*BINS, xOffsetData, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float)*DISPLAY_BUF_LENGTH, xOffsetData, GL_STATIC_DRAW);
   glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
   glEnableVertexAttribArray(1);
   glVertexAttribDivisor(1, 1);
 
   glGenBuffers(1, &magnitudeVBO);
   glBindBuffer(GL_ARRAY_BUFFER, magnitudeVBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * BINS, initMagnitudeData, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * DISPLAY_BUF_LENGTH, initMagnitudeData, GL_STATIC_DRAW);
   glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)0);
   glEnableVertexAttribArray(2);
   glVertexAttribDivisor(2, 1);

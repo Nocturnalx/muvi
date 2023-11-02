@@ -18,7 +18,7 @@
 #define BUFFER_LENGTH_MSEC 500
 #endif
 
-static int inputDevice = 0;
+static int inputDevice = 1;
 static int outputDevice = 0;
 
 static int inputDeviceIndex = 0;
@@ -35,7 +35,7 @@ extern bool threadComplete;
 class AudioManager {
 private:
     /* data */
-    float m_magnitudeData[BINS];
+    float m_displayData[DISPLAY_BUF_LENGTH];
 
 public:
     AudioManager();
@@ -43,7 +43,7 @@ public:
 
     std::unique_ptr<FFTProcessor> processor;
 
-    float * getMagnitudeData();
+    float * getDisplayData();
 };
 
 //PA callback functions

@@ -78,20 +78,20 @@ AudioManager::AudioManager()
     processor = std::make_unique<FFTProcessor>();
     processor->init(SAMPLE_RATE, sizeof(short int), CHANNEL_NUM, BUFFER_LENGTH_MSEC);
 
-    for (int i = 0; i < BINS; i++){
-        m_magnitudeData[i] = 0.0;
+    for (int i = 0; i < DISPLAY_BUF_LENGTH; i++){
+        m_displayData[i] = 0.0;
     }
 
-    processor->bindMagnitudeBuffer(m_magnitudeData);
+    processor->bindDisplayBuffer(m_displayData);
 }
 
 AudioManager::~AudioManager()
 {
 }
 
-float * AudioManager::getMagnitudeData(){
+float * AudioManager::getDisplayData(){
 
-    return m_magnitudeData;
+    return m_displayData;
 }
 
 static void getDeviceIDs(){
