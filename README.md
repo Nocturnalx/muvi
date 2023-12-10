@@ -9,6 +9,9 @@ It uses gtk 3 for the window, expoy for openGL rendering and the pulse audio api
 
 the binary in /bin is only for raspberry pi.
 
+Usage
+run on the command line with ./muvi when run the command line will print out the available audio sources, you can use the -d flag followed by a number to specify the device. If the flag is not set then it will always choose 0 which will be the default pulse audio device.
+
 Planned features:
 
 - I/O controll (setting audio source in command line or in app)
