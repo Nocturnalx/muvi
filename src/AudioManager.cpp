@@ -121,7 +121,7 @@ static void start(pa_context *ctx, std::shared_ptr<AudioManager> audioManager){
     spec.format = PA_SAMPLE_S16LE;
     spec.rate = SAMPLE_RATE;
     spec.channels = CHANNEL_NUM;
-    pa_stream *stm = pa_stream_new(ctx, "aenc", &spec, NULL);
+    pa_stream *stm = pa_stream_new(ctx, "muvi", &spec, NULL);
 
     int sampleSize = sizeof(short int);
 
@@ -176,7 +176,7 @@ void setupAudio(std::shared_ptr<AudioManager> audioManager){
     pa_threaded_mainloop_lock(mloop);
 
     mlapi = pa_threaded_mainloop_get_api(mloop); //get api
-    ctx = pa_context_new_with_proplist(mlapi, "aenc", NULL); //get context with application name and property list
+    ctx = pa_context_new_with_proplist(mlapi, "muvi", NULL); //get context with application name and property list
     pa_context_set_state_callback(ctx, on_state_change, NULL); // set context state change call back function
 
     /* Connect the context */
