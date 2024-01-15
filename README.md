@@ -7,6 +7,10 @@ It uses gtk 3 for the window, expoy for openGL rendering and the pulse audio api
 
 `sudo apt install libgtk-3-dev libepoxy-dev libpulse-dev`
 
+As well as the typical:
+
+`sudo apt install cmake build-essential`
+
 the binary in /bin is only for raspberry pi.
 
 # Usage
