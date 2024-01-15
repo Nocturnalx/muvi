@@ -62,7 +62,7 @@ static gboolean render_30 (GtkGLArea *area, GdkGLContext *context){
   // already been set to be the size of the allocation
 
   // we can start by clearing the buffer
-  glClearColor (0, 0, 0, 1);
+  glClearColor (0.1568627451, 0.1568627451, 0.1568627451, 1);
   glClear (GL_COLOR_BUFFER_BIT);
 
   glUseProgram(program);
@@ -83,7 +83,7 @@ static gboolean render_21 (GtkGLArea *area, GdkGLContext *context){
   // already been set to be the size of the allocation
 
   // we can start by clearing the buffer
-  glClearColor (0, 0, 0, 1);
+  glClearColor (0.1568627451, 0.1568627451, 0.1568627451, 1);
   glClear (GL_COLOR_BUFFER_BIT);
   glUseProgram(program);
   glBindVertexArray(vao);
@@ -207,8 +207,8 @@ void activate (GtkApplication *app, gpointer user_data) {
     
   GtkWidget *window = gtk_application_window_new (app);
   gtk_window_set_title (GTK_WINDOW (window), "Window");
-  // gtk_window_set_default_size(GTK_WINDOW(window), 700, 500);
-  gtk_window_fullscreen(GTK_WINDOW(window));
+  gtk_window_set_default_size(GTK_WINDOW(window), 700, 500);
+  // gtk_window_fullscreen(GTK_WINDOW(window));
 
   GtkGLArea *glArea = GTK_GL_AREA(gtk_gl_area_new());
   gtk_gl_area_set_has_depth_buffer(glArea, FALSE);

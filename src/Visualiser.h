@@ -32,7 +32,7 @@ static const char *fragment_shader_source_30 = R"(
     in float colourScale;
     out vec4 frag_color;
     void main() {
-        frag_color = vec4(1.0 - colourScale, colourScale, 0.0, 1.0); // red color
+        frag_color = vec4(0.4078431 + (colourScale * 0.3921568), 0.6156862 - (colourScale * 0.4745098), 0.4156862 - (colourScale * 0.3019607), 1.0);
     }
 )";
 
@@ -57,7 +57,7 @@ static const char *fragment_shader_source_21 = R"(
     varying float colourScale;
 
     void main() {
-        gl_FragColor = vec4(1.0 - colourScale, 0.0, colourScale, 1.0); // red color
+        gl_FragColor = vec4(0.4078431 + (colourScale * 0.3921568), 0.6156862 - (colourScale * 0.4745098), 0.4156862 - (colourScale * 0.3019607), 1.0);
     }
 )";
 
