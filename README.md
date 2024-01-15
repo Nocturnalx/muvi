@@ -11,6 +11,14 @@ As well as the typical:
 
 `sudo apt install cmake build-essential`
 
+and then:
+
+```
+cmake
+cd build
+make
+```
+
 the binary in /bin is only for raspberry pi.
 
 # Usage
