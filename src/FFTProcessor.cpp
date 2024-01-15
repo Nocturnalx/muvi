@@ -76,8 +76,6 @@ void FFTProcessor::process(short int * bufferPtr, size_t num){
                 //add to buffer
                 m_displayBuffer[displayBufferIndex] = valMax; 
 
-                // intermediate *= 1.06;
-
                 if (++rollerIndex % roller == 0){
                     // width = ceil(intermediate);
                     width *= 4;
