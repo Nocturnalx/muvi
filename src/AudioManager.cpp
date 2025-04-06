@@ -1,4 +1,5 @@
 #include "AudioManager.h"
+#include <chrono>
 
 int inputDevice = 0;
 int outputDevice = 0;
@@ -126,9 +127,11 @@ static void start(pa_context *ctx, std::shared_ptr<AudioManager> audioManager){
     int sampleSize = sizeof(short int);
 
     pa_buffer_attr attr;
-    memset(&attr, 0xff, sizeof(attr));
-    attr.tlength = spec.rate * sampleSize * spec.channels * BUFFER_LENGTH_MSEC / 1000; //set buffer max length
-
+    // memset(&attr, 0xff, sizeof(attr));
+    attr.tlength = spec.rate * sampleSize * spec.channels * BUFFER_LENGTH_MSEC / 1000; //set buffer target len
+    attr.maxlength = attr.tlength;
+    attr.prebuf = (uint32_t)-1;
+    attr.minreq = attr.tlength / 4;
     pa_stream_set_read_callback(stm, on_io_complete, NULL); //set callback func for new data available
     pa_stream_connect_record(stm, inputDeviceID.data(), &attr, PA_STREAM_NOFLAGS); //connect to device using device ID
 
@@ -157,7 +160,11 @@ static void start(pa_context *ctx, std::shared_ptr<AudioManager> audioManager){
         } else if (data == NULL && n != 0) {
             std::cout << "buffer overrun\n";
         } else {
+            // std::cout << "samp cnt " << n << std::endl;
+            // auto start_time = std::chrono::high_resolution_clock::now();
             audioManager->processor->process((short int *)data, n);
+            // auto end_time = std::chrono::high_resolution_clock::now();
+            // std::cout << "T: " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << std::endl;
         }
 
         pa_stream_drop(stm);

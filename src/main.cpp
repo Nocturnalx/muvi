@@ -22,7 +22,7 @@ int main (int argc, char **argv) {
 
     int status;
     
-    GtkApplication * app = gtk_application_new ("com.utladal.visualiser", G_APPLICATION_FLAGS_NONE);
+    GtkApplication * app = gtk_application_new ("com.utladal.visualiser", G_APPLICATION_DEFAULT_FLAGS);
     g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
 
     status = g_application_run (G_APPLICATION (app), 0, NULL);

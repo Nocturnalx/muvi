@@ -15,7 +15,7 @@
 #endif
 
 #ifndef BUFFER_LENGTH_MSEC
-#define BUFFER_LENGTH_MSEC 500
+#define BUFFER_LENGTH_MSEC 20
 #endif
 
 extern int inputDevice;
