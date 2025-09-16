@@ -7,7 +7,7 @@ It uses gtk 3 for the window, expoy for openGL rendering and the pulse audio api
 
 `sudo apt install libgtk-3-dev libepoxy-dev libpulse-dev`
 
-`sudo pacman -S sudo pacman -S gtk3 libepoxy libpulse`
+`sudo pacman -S gtk3 libepoxy libpulse`
 
 As well as the typical:
 
